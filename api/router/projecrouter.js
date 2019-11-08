@@ -65,6 +65,49 @@ router.post("/:id/addTask", (req, res) => {
     });
 });
 
+
+
+// STRETCH - GET /api/projects/:id/resources for Retrieving resources by project - TESTED
+router.get('/:id/resources', (req, res) => {
+  Projects.getProjectResources(req.params.id)
+    .then(resources => {
+      if (resources.length) {
+        res.status(200).json(resources);
+      } else {
+        res
+          .status(404)
+          .json({ message: 'Could not find resources for given project' });
+      }
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({ message: 'Failed to get resources' });
+    });
+});
+
+// STRETCH - GET /api/projects/:id endpoint for Retrieving a project by ID - TESTED
+router.get('/:id', (req, res) => {
+  Projects.getProjectById(req.params.id)
+    .then(project => {
+      if (project) {
+        const updatedProject = {
+          ...project,
+          completed: project.completed === 1 ? true : false,
+        };
+        res.status(200).json(updatedProject);
+      } else {
+        res
+          .status(404)
+          .json({ message: 'Could not find project with given ID' });
+      }
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({ message: 'Failed to get project' });
+    });
+});
+
+
 /* ******************************************************************* */
 
 module.exports = router;
