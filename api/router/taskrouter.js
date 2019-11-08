@@ -1,6 +1,6 @@
 const express = require("express");
 
-const Tasks = require("./projecrouter");
+const Tasks = require("../helper/tasksmodel");
 
 const router = express.Router();
 
@@ -28,25 +28,7 @@ router.get("/", (req, res) => {
     });
 });
 
-// STRETCH - GET /api/tasks/:id endpoint for Retrieving a task by ID - TESTED
-router.get("/:id", (req, res) => {
-  Tasks.getTaskById(req.params.id)
-    .then(task => {
-      if (task) {
-        const updatedTask = {
-          ...task,
-          completed: task.completed === 1 ? true : false
-        };
-        res.status(200).json(updatedTask);
-      } else {
-        res.status(404).json({ message: "Could not find task with given ID" });
-      }
-    })
-    .catch(err => {
-      console.log(err);
-      res.status(500).json({ message: "Failed to get task" });
-    });
-});
+
 
 /* ******************************************************************* */
 
